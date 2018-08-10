@@ -1,0 +1,23 @@
+.list-item {
+  border-bottom-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+.list-item .name {
+  margin-bottom: 10px;
+}
+
+.list-item .lyrics {
+  margin-top: 10px;
+}
+
+.list-item .lyrics .material-icons {
+  font-size: 14px;
+  position: relative;
+  top: 2px;
+}
+
+a.no-style {
+  text-decoration: none !important;
+  color: inherit !important;
+}
