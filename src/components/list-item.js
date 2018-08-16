@@ -8,7 +8,7 @@ import './list-item.css'
 
 const ListItem = ({ data, clickHandler }) => (
   <Card className="list-item">
-    <a href="#" className="no-style" onClick={clickHandler}>
+    <div className="div-link" onClick={clickHandler}>
       <CardContent>
         <Typography className="name" variant="title">
           {data.name}
@@ -21,7 +21,7 @@ const ListItem = ({ data, clickHandler }) => (
           </a>
         </Typography>
       </CardContent>
-    </a>
+    </div>
   </Card>
 )
 
