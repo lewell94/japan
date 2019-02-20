@@ -14,8 +14,8 @@ class Map extends React.Component {
 
     this.setState({
       map: new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 40.099038, lng: -75.091187 },
-        zoom: 11,
+        center: { lat: 35.707076, lng: 139.740871 },
+        zoom: 12,
       }),
     }, this.createMarkers.bind(this))
   }
@@ -24,9 +24,20 @@ class Map extends React.Component {
     const markers = []
 
     this.props.data.forEach(reference => {
-      const { lat, lng } = reference.node
+      console.log(reference)
+      const { lat, lng, type } = reference.node
       const position = { lat, lng }
-      const marker = new google.maps.Marker({ position, map: this.state.map })
+      const marker = new google.maps.Marker({
+        position,
+        map: this.state.map,
+        icon: {
+          url: type === 'hotel'
+            ? 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+            : type === 'attraction'
+              ? 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+              : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+        }
+      })
 
       markers.push(marker)
     })

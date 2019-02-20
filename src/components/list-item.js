@@ -13,11 +13,13 @@ const ListItem = ({ data, clickHandler }) => (
         <Typography className="name" variant="title">
           {data.name}
         </Typography>
-        <Typography className="song">Song: {data.song}</Typography>
-        <Typography className="album">Album: {data.album}</Typography>
         <Typography className="lyrics">
-          <a className="lyrics" href={data.lyricsLink} target="_blank">
-            <Icon fontSize="inherit">launch</Icon> Lyrics
+          {data.type.slice(0, 1).toUpperCase()}{data.type.slice(1)}&nbsp;
+          {data.type === 'hotel' ? '(Blue Pin)' : data.type === 'attraction' ? '(Green Pin)' : '(Red Pin)'}
+        </Typography>
+        <Typography className="lyrics">
+          <a className="lyrics" href={data.link} target="_blank">
+            <Icon fontSize="inherit">launch</Icon> Link
           </a>
         </Typography>
       </CardContent>
