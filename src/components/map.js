@@ -18,15 +18,15 @@ class Map extends React.Component {
         center: { lat: 35.707076, lng: 139.740871 },
         zoom: 12,
       }),
-    }, this.createMarkers.bind(this))
+    }, this.createMarkers.bind(this, this.props.data))
   }
 
-  createMarkers() {
+  createMarkers(data) {
     const markers = []
 
-    this.props.data.forEach(reference => {
-      console.log(reference)
+    data.forEach(reference => {
       const { lat, lng, type } = reference.node
+
       const position = { lat, lng }
       const marker = new google.maps.Marker({
         position,
@@ -70,6 +70,10 @@ class Map extends React.Component {
     setTimeout(() => {
       this.closeAllInfoWindows()
 
+      if (!this.state.markers[index].position) {
+        return
+      }
+
       const { lat, lng } = this.state.markers[index].position
 
       google.maps.event.trigger(this.state.markers[index], 'click')
@@ -85,10 +89,26 @@ class Map extends React.Component {
     })
   }
 
+  updatePinsByType() {
+    if (!this.state || !this.state.markers) {
+      return
+    }
+
+    this.state.markers.forEach(marker => {
+      if (this.props.filteredType === "" || this.props.filteredType === "all") {
+        marker.setVisible(true)
+      } else {
+        marker.setVisible(marker.icon.url === TYPE_PIN[this.props.filteredType])
+      }
+    })
+  }
+
   render() {
     if (this.props.clickedCard !== null) {
       this.selectPin(this.props.clickedCard)
     }
+
+    this.updatePinsByType()
 
     return <div id="map" />
   }
