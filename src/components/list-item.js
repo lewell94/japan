@@ -5,6 +5,7 @@ import Icon from '@material-ui/core/Icon'
 import Typography from '@material-ui/core/Typography'
 
 import './list-item.css'
+import TYPE_DISPLAY from '../enums/type-display';
 
 const ListItem = ({ data, clickHandler }) => (
   <Card className="list-item">
@@ -14,8 +15,7 @@ const ListItem = ({ data, clickHandler }) => (
           {data.name}
         </Typography>
         <Typography className="lyrics">
-          {data.type.slice(0, 1).toUpperCase()}{data.type.slice(1)}&nbsp;
-          {data.type === 'hotel' ? '(Blue Pin)' : data.type === 'attraction' ? '(Green Pin)' : '(Red Pin)'}
+          {TYPE_DISPLAY[data.type]}
         </Typography>
         <Typography className="lyrics">
           <a className="lyrics" href={data.link} target="_blank">

@@ -1,6 +1,7 @@
 import React from 'react'
 
 import './map.css'
+import TYPE_PIN from '../enums/type-pin'
 
 class Map extends React.Component {
   constructor(props) {
@@ -31,11 +32,7 @@ class Map extends React.Component {
         position,
         map: this.state.map,
         icon: {
-          url: type === 'hotel'
-            ? 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-            : type === 'attraction'
-              ? 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
-              : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+          url: TYPE_PIN[type]
         }
       })
 
