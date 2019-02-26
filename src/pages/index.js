@@ -1,6 +1,8 @@
 import React from 'react'
+import { graphql } from "gatsby"
 
 import Filter from '../components/filter'
+import Layout from '../components/layout'
 import ListItem from '../components/list-item'
 import Map from '../components/map'
 
@@ -47,25 +49,27 @@ class IndexPage extends React.Component {
     }, [])
 
     return (
-      <div style={{ display: 'flex' }}>
-        <div style={{ width: '20%', height: '100vh', overflowY: 'scroll' }}>
-          <Filter changeHandler={this.onTypeFilterChange.bind(this)}></Filter>
-          {listItems}
+      <Layout>
+        <div style={{ display: 'flex' }}>
+          <div style={{ width: '20%', height: '100vh', overflowY: 'scroll' }}>
+            <Filter changeHandler={this.onTypeFilterChange.bind(this)}></Filter>
+            {listItems}
+          </div>
+          <div style={{ width: '80%', height: '100vh' }}>
+            <Map
+              data={this.props.data.allContentfulLocation.edges}
+              clickedCard={this.state.clickedCard}
+              filteredType={this.state.filteredType}
+            />
+          </div>
         </div>
-        <div style={{ width: '80%', height: '100vh' }}>
-          <Map
-            data={this.props.data.allContentfulLocation.edges}
-            clickedCard={this.state.clickedCard}
-            filteredType={this.state.filteredType}
-          />
-        </div>
-      </div>
+      </Layout>
     )
   }
 }
 
 export const query = graphql`
-  query ReferencesQuery {
+  {
     allContentfulLocation {
       edges {
         node {
