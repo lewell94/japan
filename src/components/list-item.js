@@ -15,10 +15,11 @@ const ListItem = ({ data, clickHandler }) => (
           {data.name}
         </Typography>
         <Typography className="lyrics">
-          {TYPE_DISPLAY[data.type]}
+          <b>Description:</b> {data.description}<br /> 
+          <b>Category:</b> {TYPE_DISPLAY[data.type]}
         </Typography>
         <Typography className="lyrics">
-          <a className="lyrics" href={data.link} target="_blank">
+          <a className="lyrics" href={data.link} target="_blank" rel="noopener noreferrer">
             <Icon fontSize="inherit">launch</Icon> Link
           </a>
         </Typography>

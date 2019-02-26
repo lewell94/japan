@@ -27,7 +27,7 @@ class Filter extends React.Component {
   render() {
     return (
       <FormControl>
-        <InputLabel htmlFor="filter-type">Filter by Type</InputLabel>
+        <InputLabel htmlFor="filter-type">Filter by Category</InputLabel>
         <Select
           value={this.state.selectedType} 
           onChange={this.updateSelectedType.bind(this)}

@@ -75,6 +75,7 @@ export const query = graphql`
         node {
           id
           name
+          description
           link
           lat
           lng
