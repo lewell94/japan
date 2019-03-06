@@ -12,83 +12,70 @@ class Map extends React.Component {
   }
 
   componentDidMount() {
-    if (!window.google) {
+    if (!window.L) {
       return
     }
 
-    this.setState({
-      map: new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 35.707076, lng: 139.740871 },
-        zoom: 12,
-      }),
-    }, this.createMarkers.bind(this, this.props.data))
+    window.leaflet = window.L
+
+    this.createMap()
   }
 
-  createMarkers(data) {
+  createMap() {
+    const map = leaflet
+      .map('map')
+      .setView([35.690332, 139.740709], 12)
+
+    this.setState({ map }, this.createTileLayer.bind(this))
+  }
+
+  createTileLayer() {
+    leaflet
+      .tileLayer('https://a.tile.iosb.fraunhofer.de/tiles/osmorg/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.fraunhofer.de/">Fraunhofer</a> contributors',
+        maxZoom: 19
+      })
+      .addTo(this.state.map)
+
+    this.createMarkers()
+  }
+
+  createMarkers() {
     const markers = []
 
-    data.forEach(reference => {
+    this.props.data.forEach((reference, i) => {
       const { lat, lng, type } = reference.node
+      const position = [lat ? lat : 0, lng ? lng : 0]
+      const markerConfig = {
+        icon: leaflet.icon({
+          iconUrl: TYPE_PIN[type],
+          iconSize: [32, 32],
+        })
+      }
 
-      const position = { lat, lng }
-      const marker = new google.maps.Marker({
-        position,
-        map: this.state.map,
-        icon: {
-          url: TYPE_PIN[type]
-        }
-      })
+      const marker = leaflet
+        .marker(position, markerConfig)
+        .addTo(this.state.map)
+        .bindPopup(`<p>${this.props.data[i].node.name}</p>`)
 
       markers.push(marker)
     })
 
     this.setState({
       markers,
-    }, this.createInfoWindows.bind(this))
-  }
-
-  createInfoWindows() {
-    const infoWindows = []
-
-    this.state.markers.forEach((marker, i) => {
-      const infoWindow = new google.maps.InfoWindow({
-        content: `<p>${this.props.data[i].node.name}</p>`,
-      })
-
-      marker.addListener('click', () => {
-        this.closeAllInfoWindows()
-
-        infoWindow.open(this.state.map, marker)
-      })
-
-      infoWindows.push(infoWindow)
-    })
-
-    this.setState({
-      infoWindows,
     })
   }
 
   selectPin(index) {
     setTimeout(() => {
-      this.closeAllInfoWindows()
-
-      if (!this.state.markers[index].position) {
+      if (!this.state.markers[index].getLatLng) {
         return
       }
 
-      const { lat, lng } = this.state.markers[index].position
+      const { lat, lng } = this.state.markers[index].getLatLng()
 
-      google.maps.event.trigger(this.state.markers[index], 'click')
-
-      this.state.map.setCenter({ lat: lat(), lng: lng() })
-      this.state.map.setZoom(13)
-    })
-  }
-
-  closeAllInfoWindows() {
-    this.state.infoWindows.forEach(infoWindow => {
-      infoWindow.close()
+      this.state.markers[index].openPopup()
+      this.state.map.flyTo(leaflet.latLng(lat, lng), 13)
     })
   }
 
@@ -99,9 +86,11 @@ class Map extends React.Component {
 
     this.state.markers.forEach(marker => {
       if (this.props.filteredType === "" || this.props.filteredType === "all") {
-        marker.setVisible(true)
+        marker.setOpacity(1)
       } else {
-        marker.setVisible(marker.icon.url === TYPE_PIN[this.props.filteredType])
+        const opactity = marker._icon.src === TYPE_PIN[this.props.filteredType] ? 1 : 0
+
+        marker.setOpacity(opactity)
       }
     })
   }
