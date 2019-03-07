@@ -1,13 +1,13 @@
-import React from 'react'
-import Helmet from 'react-helmet'
-import { StaticQuery, graphql } from "gatsby"
+import React from 'react';
+import Helmet from 'react-helmet';
+import { StaticQuery, graphql } from 'gatsby';
 
-import './normalize.css'
-import './layout.css'
+import './normalize.css';
+import './layout.css';
 
 const Layout = ({ children }) => (
   <StaticQuery
-    query = { graphql`
+    query={graphql`
       query LayoutQuery {
         site {
           siteMetadata {
@@ -15,17 +15,26 @@ const Layout = ({ children }) => (
           }
         }
       }
-    ` }
-    render = {data => (
+    `}
+    render={data => (
       <>
-        <Helmet titleTemplate={`%s | ${data.site.siteMetadata.title}`} defaultTitle={data.site.siteMetadata.title}>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
-          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+        <Helmet
+          titleTemplate={`%s | ${data.site.siteMetadata.title}`}
+          defaultTitle={data.site.siteMetadata.title}
+        >
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+          />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          />
         </Helmet>
         <div>{children}</div>
       </>
     )}
   />
-)
+);
 
-export default Layout
+export default Layout;

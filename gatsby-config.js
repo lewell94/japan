@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: 'The Wonder Years References',
+    title: 'The Wonder Years References'
   },
   plugins: [
     'gatsby-plugin-react-helmet',
@@ -8,8 +8,8 @@ module.exports = {
       resolve: `gatsby-source-contentful`,
       options: {
         spaceId: process.env.CONTENTFUL_SPACE_ID,
-        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
-      },
-    },
-  ],
-}
+        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN
+      }
+    }
+  ]
+};
