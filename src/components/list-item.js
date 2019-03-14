@@ -7,8 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import './list-item.css';
 import TYPE_DISPLAY from '../enums/type-display';
 
-const ListItem = ({ data, clickHandler }) => (
-  <Card className="list-item">
+const ListItem = ({ clickedPin, clickHandler, data, index }) => (
+  <Card className={`list-item ${clickedPin === index ? 'highlight' : ''}`}>
     <div className="div-link" onClick={clickHandler}>
       <CardContent>
         <Typography className="name" variant="title">

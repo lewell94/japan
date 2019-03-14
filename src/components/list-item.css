@@ -1,6 +1,12 @@
 .list-item {
   border-bottom-right-radius: 0 !important;
   border-top-right-radius: 0 !important;
+  background-color: white;
+  transition: background-color 500ms linear;
+}
+
+.list-item.highlight {
+  background-color: #a0ddff;
 }
 
 .list-item .name {

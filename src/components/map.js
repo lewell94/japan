@@ -58,7 +58,10 @@ class Map extends React.Component {
       const marker = leaflet
         .marker(position, markerConfig)
         .addTo(this.state.map)
+        .on('click', this.props.clickHandler)
         .bindPopup(`<p>${this.props.data[i].node.name}</p>`);
+
+      marker.index = i;
 
       markers.push(marker);
     });

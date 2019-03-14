@@ -10,6 +10,7 @@ class IndexPage extends React.Component {
   constructor(props) {
     super(props);
 
+    this.listContainerRef = React.createRef();
     this.state = {
       clickedCard: null,
       clickedPin: null,
@@ -19,8 +20,38 @@ class IndexPage extends React.Component {
 
   onCardClick(cardIndex) {
     this.setState({
-      clickedCard: cardIndex
+      clickedCard: cardIndex,
+      clickedPin: null
     });
+  }
+
+  onPinClick(event) {
+    const { index } = event.target;
+
+    this.setState(
+      {
+        clickedCard: null,
+        clickedPin: index
+      },
+      () => {
+        let childIndex = -1;
+
+        for (let child of this.listContainerRef.current.children) {
+          if (childIndex !== this.state.clickedPin) {
+            childIndex++;
+          } else {
+            this.listContainerRef.current.scrollTo(0, child.offsetTop);
+            break;
+          }
+        }
+
+        setTimeout(() => {
+          this.setState({
+            clickedPin: null
+          });
+        }, 500);
+      }
+    );
   }
 
   onTypeFilterChange(type) {
@@ -40,9 +71,11 @@ class IndexPage extends React.Component {
         if (showElement) {
           elements.push(
             <ListItem
-              key={reference.node.id}
-              data={reference.node}
+              clickedPin={this.state.clickedPin}
               clickHandler={this.onCardClick.bind(this, i)}
+              data={reference.node}
+              index={i}
+              key={reference.node.id}
             />
           );
         }
@@ -55,15 +88,19 @@ class IndexPage extends React.Component {
     return (
       <Layout>
         <div style={{ display: 'flex' }}>
-          <div style={{ width: '20%', height: '100vh', overflowY: 'scroll' }}>
+          <div
+            style={{ width: '20%', height: '100vh', overflowY: 'scroll' }}
+            ref={this.listContainerRef}
+          >
             <Filter changeHandler={this.onTypeFilterChange.bind(this)} />
             {listItems}
           </div>
           <div style={{ width: '80%', height: '100vh' }}>
             <Map
-              data={this.props.data.allContentfulLocation.edges}
               clickedCard={this.state.clickedCard}
+              clickHandler={this.onPinClick.bind(this)}
               filteredType={this.state.filteredType}
+              data={this.props.data.allContentfulLocation.edges}
             />
           </div>
         </div>
