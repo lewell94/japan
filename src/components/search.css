@@ -1,0 +1,5 @@
+.MuiFormControl-root-1 {
+  margin-left: 16px !important;
+  padding-bottom: 16px !important;
+  width: calc(100% - 32px);
+}

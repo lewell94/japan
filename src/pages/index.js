@@ -5,6 +5,7 @@ import Filter from '../components/filter';
 import Layout from '../components/layout';
 import ListItem from '../components/list-item';
 import Map from '../components/map';
+import Search from '../components/search';
 
 class IndexPage extends React.Component {
   constructor(props) {
@@ -14,7 +15,8 @@ class IndexPage extends React.Component {
     this.state = {
       clickedCard: null,
       clickedPin: null,
-      filteredType: ''
+      filteredType: '',
+      searchTerm: ''
     };
   }
 
@@ -60,13 +62,25 @@ class IndexPage extends React.Component {
     });
   }
 
+  onSearchChange(term) {
+    this.setState({
+      searchTerm: term
+    });
+  }
+
   render() {
     const listItems = this.props.data.allContentfulLocation.edges.reduce(
       (elements, reference, i) => {
+        const searchValid =
+          this.state.searchTerm === ''
+            ? true
+            : reference.node.name.toLowerCase().includes(this.state.searchTerm);
+
         const showElement =
-          this.state.filteredType === '' ||
-          this.state.filteredType === 'all' ||
-          this.state.filteredType === reference.node.type;
+          searchValid &&
+          (this.state.filteredType === '' ||
+            this.state.filteredType === 'all' ||
+            this.state.filteredType === reference.node.type);
 
         if (showElement) {
           elements.push(
@@ -93,6 +107,7 @@ class IndexPage extends React.Component {
             ref={this.listContainerRef}
           >
             <Filter changeHandler={this.onTypeFilterChange.bind(this)} />
+            <Search changeHandler={this.onSearchChange.bind(this)} />
             {listItems}
           </div>
           <div style={{ width: '80%', height: '100vh' }}>
